@@ -4,7 +4,7 @@ import LinkViewReopen from '../reopens/link-view';
 export default Ember.Route.extend({
     
     init: function() {
-        console.log('Route');
+        console.log('Foo route');
     }
     
 });
