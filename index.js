@@ -7,6 +7,7 @@ var defaults = require('lodash').defaults;
 var chalk = require('chalk');
 var mergeTrees = require('broccoli-merge-trees');
 var Funnel = require('broccoli-funnel');
+var replace = require('broccoli-replace');
 
 module.exports = {
     name: 'ember-cli-custom-addons',
@@ -18,7 +19,7 @@ module.exports = {
         return config;
     },
     
-    getPaths: function(){
+    getPaths: function () {
         var config = this.project.config();
         var appDir = this.treePaths.app;
         var appRegExp = new RegExp('(.+)' + appDir + '$');
@@ -33,44 +34,62 @@ module.exports = {
         };
     },
     
-    getAddons: function() {
+    getAddons: function () {
         var paths = this.getPaths();
         
         return fs.readdirSync(paths.addons) || [];
     },
     
-    treeForApp: function (tree){
+    namespacePatterns: function () {
+        var addons = this.getAddons();
+        
+        return addons.map(function (namespace) {
+            return {
+                match: this.app.name + '/' + namespace,
+                replacement: namespace
+            }
+        }.bind(this));
+    },
+    
+    treeForTemplates: function () {
         var paths = this.getPaths();
         var addons = this.getAddons();
         
-        var trees = addons.map(function(namespace){
-            var addonPath = paths.addons + namespace;
-            var addonTree = new Funnel(this.treeGenerator(addonPath), {
-                srcDir:  '/',
-                include: ['**/*'],
-                destDir: '/' + namespace + '/'
-            });
-            
-            console.log(chalk.green('Imported addon:'), chalk.cyan(namespace));
-            
-            return addonTree;
-        }.bind(this));
+        var hbsTree = new Funnel(this.treeGenerator(paths.addons), {
+            srcDir:  '/',
+            include: ['**/*.hbs'],
+            getDestinationPath: function(relPath) {
+                console.log(relPath);
+                return relPath;
+            }
+        });
         
-        trees.unshift(tree);
+        return hbsTree;
+    },
+    
+    treeForApp: function (tree) {
+        var paths = this.getPaths();        
+        var jsTree = new Funnel(this.treeGenerator(paths.addons), {
+            srcDir:  '/',
+            include: ['**/*.js'],
+            destDir: '/'
+        });
         
-        return mergeTrees(trees, {overwrite: true});
+        return mergeTrees([tree, jsTree], {overwrite: true});
     },
 
-    included: function(app, parentAddon) {
-        
-        var target = (parentAddon || app);
-        // Now you can modify the app / parentAddon. For example, if you wanted
-        // to include a custom preprocessor, you could add it to the target's
-        // registry:
-        //
-        //     target.registry.add('js', myPreprocessor);
-        
-        
+    included: function (app, parentAddon) {
         this._super.included.apply(this, arguments);
+    },
+    
+    postprocessTree: function(type, tree) {
+        if (type === 'js') {
+            tree = replace(tree, {
+                files: ['**/*'],
+                patterns: this.namespacePatterns()
+            });
+        }
+
+        return tree;
     }
 };
