@@ -1,6 +1,6 @@
 {
   "name": "ember-cli-custom-addons",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "The default blueprint for ember-cli addons.",
   "directories": {
     "doc": "doc",
@@ -11,12 +11,25 @@
     "start": "ember server",
     "test": "ember try:testall"
   },
-  "repository": "",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:BBVAEngineering/ember-cli-custom-addons.git"
+  },
   "engines": {
     "node": ">= 0.10.0"
   },
-  "author": "",
+  "author": "BBVAEngineering",
+  "maintainers": [
+    {
+      "name": "josex2r",
+      "email": "codex2r@gmail.com"
+    }
+  ],
   "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/BBVAEngineering/ember-cli-custom-addons/issues"
+  },
+  "homepage": "https://github.com/BBVAEngineering/ember-cli-custom-addons",
   "devDependencies": {
     "broccoli-asset-rev": "^2.2.0",
     "ember-cli": "1.13.13",
@@ -38,7 +51,12 @@
     "ember-try": "~0.0.8"
   },
   "keywords": [
-    "ember-addon"
+    "ember-addon",
+    "ember-cli",
+    "sub-application",
+    "addons",
+    "build",
+    "ember"
   ],
   "dependencies": {
     "broccoli-funnel": "^1.0.1",
