@@ -1,12 +1,66 @@
-# ember-cli-custom-addons
+# ember-cli-custom-addons [![Build Status](https://travis-ci.org/BBVAEngineering/ember-cli-custom-addons.svg?branch=master)](https://travis-ci.org/BBVAEngineering/ember-cli-custom-addons) [![GitHub version](https://badge.fury.io/gh/BBVAEngineering%2Fember-cli-custom-addons.svg)](https://badge.fury.io/gh/BBVAEngineering%2Fember-cli-custom-addons)
 
-This README outlines the details of collaborating on this Ember addon.
+This addon allows to create sub-applications with a different namespace of your ember-cli project.
+
+## Information
+
+[![NPM](https://nodei.co/npm/ember-cli-custom-addons.png?downloads=true&downloadRank=true)](https://nodei.co/npm/ember-cli-custom-addons/)
+
+<table>
+<tr>
+<td>Package</td><td>ember-cli-custom-addons</td>
+</tr>
+<tr>
+<td>Description</td>
+<td>Ember-cli addons to build sub-applications</td>
+</tr>
+<tr>
+<td>Node Version</td>
+<td>>= 0.10</td>
+</tr>
+</table>
 
 ## Installation
 
-* `git clone` this repository
-* `npm install`
-* `bower install`
+* `ember install ember-cli-custom-addons`
+
+## Usage
+
+* Create `addons` directory inside the project root
+* Each folder inside `addons` directory will be merged with the `app` tree in a different namespace
+* Extend your application resolver to load your namespaces
+
+## Example
+
+```html
+dummy/
+  - app/
+    - components/
+    - routes/
+    - ...
+  - addons/
+    - foo
+      - components/
+      - routes/
+      - ... (same as 'app')
+    - bar
+      - ...
+  - public/
+  - vendor/
+  - ...
+```
+After build, inside `dist/assets/app.js`, will be defined the addons modules and templates in their respectives namespaces:
+
+```js
+// App
+define('dummy/app', ['exports', 'ember', ...
+define('dummy/components/foo', ['exports', 'ember', ...
+// Addons
+define('foo/components/foo', ['exports', 'ember', ...
+define('foo/routes/bar', ['exports', 'ember', ...
+define('bar/pods/index', ['exports', 'ember', ...
+```
+
 
 ## Running
 
