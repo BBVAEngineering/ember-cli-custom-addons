@@ -1,4 +1,4 @@
-# Ember-cli-custom-addons
+# ember-cli-custom-addons
 
 This README outlines the details of collaborating on this Ember addon.
 
