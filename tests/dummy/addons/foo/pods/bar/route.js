@@ -1,10 +1,11 @@
 import Ember from 'ember';
-import LinkViewReopen from '../reopens/link-view';
 
 export default Ember.Route.extend({
     
+    initialized: false,
+    
     init: function() {
-        console.log('Foo route');
+        this.set('initialized', true);
     }
     
 });
