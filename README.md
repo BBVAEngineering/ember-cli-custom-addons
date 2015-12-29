@@ -1,4 +1,4 @@
-# ember-cli-custom-addons [![Build Status](https://travis-ci.org/BBVAEngineering/ember-cli-custom-addons.svg?branch=master)](https://travis-ci.org/BBVAEngineering/ember-cli-custom-addons) [![GitHub version](https://badge.fury.io/gh/BBVAEngineering%2Fember-cli-custom-addons.svg)](https://badge.fury.io/gh/BBVAEngineering%2Fember-cli-custom-addons)
+# ember-cli-custom-addons [![Build Status](https://travis-ci.org/BBVAEngineering/ember-cli-custom-addons.svg?branch=master)](https://travis-ci.org/BBVAEngineering/ember-cli-custom-addons) [![GitHub version](https://badge.fury.io/gh/BBVAEngineering%2Fember-cli-custom-addons.svg)](https://badge.fury.io/gh/BBVAEngineering%2Fember-cli-custom-addons) [![Dependency Status](https://david-dm.org/BBVAEngineering/ember-cli-custom-addons.svg)](https://david-dm.org/BBVAEngineering/ember-cli-custom-addons)
 
 This addon allows to create sub-applications with a different namespace of your ember-cli project.
 
