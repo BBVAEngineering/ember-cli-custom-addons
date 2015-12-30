@@ -2,11 +2,8 @@
 'use strict';
 
 var fs = require('fs');
-var path = require('path');
 var defaults = require('lodash').defaults;
-var mergeTrees = require('broccoli-merge-trees');
 var Funnel = require('broccoli-funnel');
-var replace = require('broccoli-replace');
 
 var addons = [];
 var namespaceRegExp;
@@ -128,8 +125,6 @@ module.exports = {
             
             return tree;
         }
-        
-        return tree;
     },
     
     /**
