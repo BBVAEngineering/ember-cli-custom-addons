@@ -1,6 +1,6 @@
 {
   "name": "ember-cli-custom-addons",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Create sub-applications in your ember-cli project",
   "directories": {
     "doc": "doc",

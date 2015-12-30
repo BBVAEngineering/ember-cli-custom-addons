@@ -28,7 +28,11 @@ module.exports = {
      */
     config: function (env, config) {        
         config.customAddons = defaults(config.customAddons || {}, {
-            path: 'addons'
+            path: 'addons',
+            exclude: {
+                addons: [],
+                files: []
+            }
         });
         
         return config;
@@ -84,6 +88,31 @@ module.exports = {
     },
     
     /**
+     * Files to exclude from trees
+     *
+     * @method _getExcludes
+     * @return {Array}
+     */
+    _getExcludes: function() {
+        var config = this.project.config().customAddons;
+        var exclude = [];
+        
+        if(config.exclude){
+            if(config.exclude.files){
+                exclude = exclude.concat(config.exclude.files);
+            }
+            if(config.exclude.addons){
+                var namespacePaths = config.exclude.addons.map(function(namespace){
+                    return namespace + '/**/*'
+                });
+                exclude = exclude.concat(namespacePaths);
+            }
+        }
+        
+        return exclude;
+    },
+    
+    /**
      * Initialize paths & addons
      *
      * @method included
@@ -102,9 +131,11 @@ module.exports = {
      */
     treeForTemplates: function () {
         if (addons.length) {
+            var exclude = ['**/*.js'].concat(this._getExcludes());
+            
             var tree = new Funnel(paths.addons, {
                 include: this._templatePatterns(),
-                exclude: ['**/*.js']
+                exclude: exclude
             });
             
             return tree;
@@ -118,9 +149,11 @@ module.exports = {
      */
     treeForApp: function () {
         if (addons.length) {
+            var exclude = this._templatePatterns().concat(this._getExcludes());
+            
             var tree = new Funnel(paths.addons, {
                 include: ['**/*.js'],
-                exclude: this._templatePatterns()
+                exclude: exclude
             });
             
             return tree;

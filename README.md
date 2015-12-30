@@ -24,6 +24,23 @@ This addon allows to create sub-applications with a different namespace of your 
 
 * `ember install ember-cli-custom-addons`
 
+## Options
+
+* `path`: addons path
+* `exclude.addons`: exclude addons from build
+* `exclude.files`: exclude addon files from build
+
+```javascript
+customAddons: {
+    path: 'addons',
+    exclude: {
+        files: ['foo/*.coffee'],
+        addons: ['foo']
+    }
+},
+```
+    
+
 ## Usage
 
 * Create `addons` directory inside the project root
