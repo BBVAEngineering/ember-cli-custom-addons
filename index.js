@@ -12,21 +12,21 @@ var paths = {};
 function getNamespaceRegExp () {
     if(!namespaceRegExp){
         var namespaces = '(' + addons.join('|') + ')';
-        namespaceRegExp = new RegExp('^.+\/(' + namespaces + '\/)(.+)$');
+        namespaceRegExp = new RegExp('^[^\/]+\/(' + namespaces + '\/)(.+)$');
     }
     return namespaceRegExp;
 }
 
 module.exports = {
-    
+
     name: 'ember-cli-custom-addons',
-    
+
     /**
      * Initialize addons configuration
      *
      * @method config
      */
-    config: function (env, config) {        
+    config: function (env, config) {
         config.customAddons = defaults(config.customAddons || {}, {
             path: 'addons',
             exclude: {
@@ -34,10 +34,10 @@ module.exports = {
                 files: []
             }
         });
-        
+
         return config;
     },
-    
+
     /**
      * Set required files paths
      *
@@ -47,21 +47,21 @@ module.exports = {
         var config = this.project.config();
         var appDir = this.treePaths.app;
         var projectPath = this.app.project.root + '/';
-        
+
         if(this.isDevelopingAddon()){
             projectPath += 'tests/dummy/';
         }
-        
+
         var appPath = projectPath + 'app/';
         var addonsPath = [projectPath, config.customAddons.path].join('') + '/';
-        
+
         paths =  {
             app: appPath,
             project: projectPath,
             addons: addonsPath
         };
     },
-    
+
     /**
      * Set addons names
      *
@@ -74,7 +74,7 @@ module.exports = {
             addons = [];
         }
     },
-    
+
     /**
      * Project templates patterns
      *
@@ -86,7 +86,7 @@ module.exports = {
             return '**/*/template.' + extension;
         });
     },
-    
+
     /**
      * Files to exclude from trees
      *
@@ -96,7 +96,7 @@ module.exports = {
     _getExcludes: function() {
         var config = this.project.config().customAddons;
         var exclude = [];
-        
+
         if(config.exclude){
             if(config.exclude.files){
                 exclude = exclude.concat(config.exclude.files);
@@ -108,10 +108,10 @@ module.exports = {
                 exclude = exclude.concat(namespacePaths);
             }
         }
-        
+
         return exclude;
     },
-    
+
     /**
      * Initialize paths & addons
      *
@@ -119,11 +119,11 @@ module.exports = {
      */
     included: function(app) {
         this._super.included.apply(this, arguments);
-        
+
         this._setPaths();
         this._setAddons();
     },
-    
+
     /**
      * Add addons templates to the application tree
      *
@@ -131,17 +131,17 @@ module.exports = {
      */
     treeForTemplates: function () {
         if (addons.length) {
-            var exclude = ['**/*.js'].concat(this._getExcludes());
-            
+            var exclude = [].concat(this._getExcludes());
+
             var tree = new Funnel(paths.addons, {
                 include: this._templatePatterns(),
                 exclude: exclude
             });
-            
+
             return tree;
         }
     },
-    
+
     /**
      * Add addons scripts to the application tree
      *
@@ -150,16 +150,16 @@ module.exports = {
     treeForApp: function () {
         if (addons.length) {
             var exclude = this._templatePatterns().concat(this._getExcludes());
-            
+
             var tree = new Funnel(paths.addons, {
                 include: ['**/*.js'],
                 exclude: exclude
             });
-            
+
             return tree;
         }
     },
-    
+
     /**
      * Overrides babel config to rename modules paths
      *
@@ -171,20 +171,20 @@ module.exports = {
             var babel = options.babel;
             var moduleResolver = babel.resolveModuleSource;
             babel.moduleId = '';
-            
+
             babel.getModuleId = function (moduleName) {
                 var regExp = getNamespaceRegExp();
-                
+
                 return moduleName.replace(regExp, '$1$3');
             };
-            
+
             babel.resolveModuleSource = function (child, name) {
                 var regExp = getNamespaceRegExp();
                 var source = moduleResolver.apply(this, arguments);
-                
+
                 return source.replace(regExp, '$1$3');
             };
         }
     }
-    
+
 };
