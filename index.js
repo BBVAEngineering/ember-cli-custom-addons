@@ -12,7 +12,8 @@ var paths = {};
 function getNamespaceRegExp () {
     if(!namespaceRegExp){
         var namespaces = '(' + addons.join('|') + ')';
-        namespaceRegExp = new RegExp('^[^\/]+\/(' + namespaces + '\/)(.+)$');
+
+        namespaceRegExp = new RegExp('^[^\/]+\/(templates\/)?(' + namespaces + '\/)(.+)$');
     }
     return namespaceRegExp;
 }
@@ -103,7 +104,7 @@ module.exports = {
             }
             if(config.exclude.addons){
                 var namespacePaths = config.exclude.addons.map(function(namespace){
-                    return namespace + '/**/*'
+                    return namespace + '/**/*';
                 });
                 exclude = exclude.concat(namespacePaths);
             }
@@ -131,7 +132,7 @@ module.exports = {
      */
     treeForTemplates: function () {
         if (addons.length) {
-            var exclude = [].concat(this._getExcludes());
+            var exclude = ['**/*/*.js'].concat(this._getExcludes());
 
             var tree = new Funnel(paths.addons, {
                 include: this._templatePatterns(),
@@ -152,7 +153,7 @@ module.exports = {
             var exclude = this._templatePatterns().concat(this._getExcludes());
 
             var tree = new Funnel(paths.addons, {
-                include: ['**/*.js'],
+                include: ['**/*/*.js'],
                 exclude: exclude
             });
 
@@ -175,14 +176,14 @@ module.exports = {
             babel.getModuleId = function (moduleName) {
                 var regExp = getNamespaceRegExp();
 
-                return moduleName.replace(regExp, '$1$3');
+                return moduleName.replace(regExp, '$2$4');
             };
 
             babel.resolveModuleSource = function (child, name) {
                 var regExp = getNamespaceRegExp();
                 var source = moduleResolver.apply(this, arguments);
 
-                return source.replace(regExp, '$1$3');
+                return source.replace(regExp, '$2$4');
             };
         }
     }
