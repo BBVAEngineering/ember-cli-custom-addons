@@ -170,20 +170,11 @@ module.exports = {
         var options = registry.app.options;
         if (options && options.babel) {
             var babel = options.babel;
-            var moduleResolver = babel.resolveModuleSource;
-            babel.moduleId = '';
 
-            babel.getModuleId = function (moduleName) {
+            babel.getModuleId = babel.getModuleId || function (moduleName) {
                 var regExp = getNamespaceRegExp();
 
                 return moduleName.replace(regExp, '$2$4');
-            };
-
-            babel.resolveModuleSource = function (child, name) {
-                var regExp = getNamespaceRegExp();
-                var source = moduleResolver.apply(this, arguments);
-
-                return source.replace(regExp, '$2$4');
             };
         }
     }
