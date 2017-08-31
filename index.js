@@ -1,4 +1,4 @@
-/* jshint node: true */
+/* eslint-env node */
 'use strict';
 
 var fs = require('fs');
@@ -9,174 +9,185 @@ var addons = [];
 var namespaceRegExp;
 var paths = {};
 
-function getNamespaceRegExp () {
-    if(!namespaceRegExp){
-        var namespaces = '(' + addons.join('|') + ')';
+function getNamespaceRegExp() {
+	if (!namespaceRegExp) {
+		namespaceRegExp = new RegExp('^[^\/]+\/(?:templates\/)?((?:' + addons.join('|') + '\/).+)$');
+	}
 
-        namespaceRegExp = new RegExp('^[^\/]+\/(templates\/)?(' + namespaces + '\/)(.+)$');
-    }
-    return namespaceRegExp;
+	return namespaceRegExp;
 }
 
 module.exports = {
 
-    name: 'ember-cli-custom-addons',
+	name: 'ember-cli-custom-addons',
 
-    /**
-     * Initialize addons configuration
-     *
-     * @method config
-     */
-    config: function (env, config) {
-        config.customAddons = defaults(config.customAddons || {}, {
-            path: 'addons',
-            exclude: {
-                addons: [],
-                files: []
-            }
-        });
+	/**
+	 * Initialize addons configuration
+	 *
+	 * @method config
+	 */
+	config: function (env, config) {
+		config.customAddons = defaults(config.customAddons || {}, {
+			path: 'addons',
+			exclude: {
+				addons: [],
+				files: []
+			}
+		});
 
-        return config;
-    },
+		return config;
+	},
 
-    /**
-     * Set required files paths
-     *
-     * @method _setPaths
-     */
-    _setPaths: function () {
-        var config = this.project.config();
-        var appDir = this.treePaths.app;
-        var projectPath = this.app.project.root + '/';
+	/**
+	 * Set required files paths
+	 *
+	 * @method _setPaths
+	 */
+	_setPaths: function () {
+		var config = this.project.config();
+		var appDir = this.treePaths.app;
+		var projectPath = this.app.project.root + '/';
 
-        if(this.isDevelopingAddon()){
-            projectPath += 'tests/dummy/';
-        }
+		if(this.isDevelopingAddon()){
+			projectPath += 'tests/dummy/';
+		}
 
-        var appPath = projectPath + 'app/';
-        var addonsPath = [projectPath, config.customAddons.path].join('') + '/';
+		var appPath = projectPath + 'app/';
+		var addonsPath = [projectPath, config.customAddons.path].join('') + '/';
 
-        paths =  {
-            app: appPath,
-            project: projectPath,
-            addons: addonsPath
-        };
-    },
+		paths =  {
+			app: appPath,
+			project: projectPath,
+			addons: addonsPath
+		};
+	},
 
-    /**
-     * Set addons names
-     *
-     * @method _setAddons
-     */
-    _setAddons: function () {
-        try {
-            addons = fs.readdirSync(paths.addons);
-        } catch (e) {
-            addons = [];
-        }
-    },
+	/**
+	 * Set addons names
+	 *
+	 * @method _setAddons
+	 */
+	_setAddons: function () {
+		try {
+			addons = fs.readdirSync(paths.addons);
+		} catch (e) {
+			addons = [];
+		}
+	},
 
-    /**
-     * Project templates patterns
-     *
-     * @method _templatePatterns
-     * @return {Array}
-     */
-    _templatePatterns: function() {
-        return this.registry.extensionsForType('template').map(function(extension) {
-            return '**/*/template.' + extension;
-        });
-    },
+	/**
+	 * Project templates patterns
+	 *
+	 * @method _templatePatterns
+	 * @return {Array}
+	 */
+	_templatePatterns: function() {
+		return this.registry.extensionsForType('template').map(function(extension) {
+			return '**/*/template.' + extension;
+		});
+	},
 
-    /**
-     * Files to exclude from trees
-     *
-     * @method _getExcludes
-     * @return {Array}
-     */
-    _getExcludes: function() {
-        var config = this.project.config().customAddons;
-        var exclude = [];
+	/**
+	 * Files to exclude from trees
+	 *
+	 * @method _getExcludes
+	 * @return {Array}
+	 */
+	_getExcludes: function() {
+		var config = this.project.config().customAddons;
+		var exclude = [];
 
-        if(config.exclude){
-            if(config.exclude.files){
-                exclude = exclude.concat(config.exclude.files);
-            }
-            if(config.exclude.addons){
-                var namespacePaths = config.exclude.addons.map(function(namespace){
-                    return namespace + '/**/*';
-                });
-                exclude = exclude.concat(namespacePaths);
-            }
-        }
+		if(config.exclude){
+			if(config.exclude.files){
+				exclude = exclude.concat(config.exclude.files);
+			}
+			if(config.exclude.addons){
+				var namespacePaths = config.exclude.addons.map(function(namespace){
+					return namespace + '/**/*';
+				});
+				exclude = exclude.concat(namespacePaths);
+			}
+		}
 
-        return exclude;
-    },
+		return exclude;
+	},
 
-    /**
-     * Initialize paths & addons
-     *
-     * @method included
-     */
-    included: function(app) {
-        this._super.included.apply(this, arguments);
+	/**
+	 * Initialize paths & addons
+	 *
+	 * @method included
+	 */
+	included: function(app) {
+		this._super.included.apply(this, arguments);
 
-        this._setPaths();
-        this._setAddons();
-    },
+		this._setPaths();
+		this._setAddons();
 
-    /**
-     * Add addons templates to the application tree
-     *
-     * @method treeForTemplates
-     */
-    treeForTemplates: function () {
-        if (addons.length) {
-            var exclude = ['**/*/*.js'].concat(this._getExcludes());
+		this.setupPreprocessorRegistry('parent', app.registry);
+	},
 
-            var tree = new Funnel(paths.addons, {
-                include: this._templatePatterns(),
-                exclude: exclude
-            });
+	/**
+	 * Add addons templates to the application tree
+	 *
+	 * @method treeForTemplates
+	 */
+	treeForTemplates: function () {
+		if (addons.length) {
+			var exclude = ['**/*/*.js'].concat(this._getExcludes());
 
-            return tree;
-        }
-    },
+			var tree = new Funnel(paths.addons, {
+				include: this._templatePatterns(),
+				exclude: exclude
+			});
 
-    /**
-     * Add addons scripts to the application tree
-     *
-     * @method treeForApp
-     */
-    treeForApp: function () {
-        if (addons.length) {
-            var exclude = this._templatePatterns().concat(this._getExcludes());
+			return tree;
+		}
+	},
 
-            var tree = new Funnel(paths.addons, {
-                include: ['**/*/*.js'],
-                exclude: exclude
-            });
+	/**
+	 * Add addons scripts to the application tree
+	 *
+	 * @method treeForApp
+	 */
+	treeForApp: function () {
+		if (addons.length) {
+			var exclude = this._templatePatterns().concat(this._getExcludes());
 
-            return tree;
-        }
-    },
+			var tree = new Funnel(paths.addons, {
+				include: ['**/*/*.js'],
+				exclude: exclude
+			});
 
-    /**
-     * Overrides babel config to rename modules paths
-     *
-     * @method setupPreprocessorRegistry
-     */
-    setupPreprocessorRegistry: function(type, registry) {
-        var options = registry.app.options;
-        if (options && options.babel) {
-            var babel = options.babel;
+			return tree;
+		}
+	},
 
-            babel.getModuleId = babel.getModuleId || function (moduleName) {
-                var regExp = getNamespaceRegExp();
+	/**
+	 * Overrides babel config to rename modules paths
+	 *
+	 * @method setupPreprocessorRegistry
+	 */
+	setupPreprocessorRegistry: function(type, registry) {
+		registry.app.options = registry.app.options || {};
 
-                return moduleName.replace(regExp, '$2$4');
-            };
-        }
-    }
+		var options = registry.app.options;
+
+		options.babel = options.babel || {};
+
+		var babel = options.babel;
+		var resolveModuleSource = babel.resolveModuleSource;
+
+		babel.getModuleId = babel.getModuleId || function (moduleName) {
+			var regExp = getNamespaceRegExp();
+
+			return moduleName.replace(regExp, '$1');
+		};
+
+		babel.resolveModuleSource = function () {
+			var moduleName = resolveModuleSource.apply(babel, arguments);
+
+			return babel.getModuleId(moduleName);
+		};
+	}
 
 };
