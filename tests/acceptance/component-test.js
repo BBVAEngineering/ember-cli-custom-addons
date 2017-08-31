@@ -4,9 +4,9 @@ import moduleForAcceptance from '../../tests/helpers/module-for-acceptance';
 moduleForAcceptance('Acceptance | component');
 
 test('component exists', (assert) => {
-	assert.ok(requirejs.entries['foo/components/test-component/component']);
+	assert.ok(require('foo/components/test-component/component'));
 });
 
 test('template exists', (assert) => {
-	assert.ok(requirejs.entries['foo/components/test-component/template']);
+	assert.ok(require('foo/components/test-component/template'));
 });
