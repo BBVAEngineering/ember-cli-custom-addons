@@ -122,8 +122,6 @@ module.exports = {
 
 		this._setPaths();
 		this._setAddons();
-
-		this.setupPreprocessorRegistry('parent', app.registry);
 	},
 
 	/**
