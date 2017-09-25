@@ -122,6 +122,7 @@ module.exports = {
 
 		this._setPaths();
 		this._setAddons();
+		this._configureBabel(app);
 	},
 
 	/**
@@ -163,29 +164,27 @@ module.exports = {
 	/**
 	 * Overrides babel config to rename modules paths
 	 *
-	 * @method setupPreprocessorRegistry
+	 * @method _configureBabel
 	 */
-	setupPreprocessorRegistry: function(type, registry) {
-		registry.app.options = registry.app.options || {};
+	_configureBabel(app) {
+		app.options.babel = app.options.babel || {};
+		app.options.babel.plugins = app.options.babel.plugins || [];
 
-		var options = registry.app.options;
+		var plugins = app.options.babel.plugins;
+		var regexp = getNamespaceRegExp();
+		var isInjected = plugins.find(plugin =>
+			(plugin[0] === 'modules-regexp' || plugin[0] === 'babel-plugin-modules-regexp') &&
+			plugin[1] && plugin[1].regexp === regexp
+		);
 
-		options.babel = options.babel || {};
-
-		var babel = options.babel;
-		var resolveModuleSource = babel.resolveModuleSource;
-
-		babel.getModuleId = babel.getModuleId || function (moduleName) {
-			var regExp = getNamespaceRegExp();
-
-			return moduleName.replace(regExp, '$1');
-		};
-
-		babel.resolveModuleSource = function () {
-			var moduleName = resolveModuleSource.apply(babel, arguments);
-
-			return babel.getModuleId(moduleName);
-		};
+		if (!isInjected) {
+			app.options.babel.plugins.push([
+				'modules-regexp', {
+					regexp: regexp,
+					substr: '$1'
+				}
+			]);
+		}
 	}
 
 };
