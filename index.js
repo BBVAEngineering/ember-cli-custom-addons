@@ -171,12 +171,16 @@ module.exports = {
 		app.options.babel.plugins = app.options.babel.plugins || [];
 
 		var plugins = app.options.babel.plugins;
-		var isInjected = plugins.find(plugin => plugin[0] === 'modules-regexp' || plugin[0] === 'babel-plugin-modules-regexp');
+		var regexp = getNamespaceRegExp();
+		var isInjected = plugins.find(plugin =>
+			(plugin[0] === 'modules-regexp' || plugin[0] === 'babel-plugin-modules-regexp') &&
+			plugin[1] && plugin[1].regexp === regexp
+		);
 
 		if (!isInjected) {
 			app.options.babel.plugins.push([
 				'modules-regexp', {
-					regexp: getNamespaceRegExp(),
+					regexp: regexp,
 					substr: '$1'
 				}
 			]);
