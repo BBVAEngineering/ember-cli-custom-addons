@@ -34,6 +34,7 @@ module.exports = {
 				files: []
 			}
 		});
+		this.options = config;
 
 		return config;
 	},
@@ -44,7 +45,8 @@ module.exports = {
 	 * @method _setPaths
 	 */
 	_setPaths: function () {
-		var config = this.project.config();
+		var options = this.options && this.options.customAddons;
+		var config = options ? options : this.project.config().customAddons;
 		var appDir = this.treePaths.app;
 		var projectPath = this.app.project.root + '/';
 
@@ -53,7 +55,7 @@ module.exports = {
 		}
 
 		var appPath = projectPath + 'app/';
-		var addonsPath = [projectPath, config.customAddons.path].join('') + '/';
+		var addonsPath = [projectPath, config.path].join('') + '/';
 
 		paths =  {
 			app: appPath,
@@ -94,7 +96,8 @@ module.exports = {
 	 * @return {Array}
 	 */
 	_getExcludes: function() {
-		var config = this.project.config().customAddons;
+		var options = this.options && this.options.customAddons;
+		var config = options ? options : this.project.config().customAddons;
 		var exclude = [];
 
 		if(config.exclude){
