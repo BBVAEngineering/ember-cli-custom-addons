@@ -1,5 +1,9 @@
 'use strict';
 
 module.exports = {
-	extends: 'eslint-config-bbva'
+	root: true,
+	extends: 'eslint-config-bbva',
+	env: {
+		browser: true
+	}
 };
