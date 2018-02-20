@@ -1,4 +1,8 @@
-# ember-cli-custom-addons [![Build Status](https://travis-ci.org/BBVAEngineering/ember-cli-custom-addons.svg?branch=master)](https://travis-ci.org/BBVAEngineering/ember-cli-custom-addons) [![GitHub version](https://badge.fury.io/gh/BBVAEngineering%2Fember-cli-custom-addons.svg)](https://badge.fury.io/gh/BBVAEngineering%2Fember-cli-custom-addons) [![Dependency Status](https://david-dm.org/BBVAEngineering/ember-cli-custom-addons.svg)](https://david-dm.org/BBVAEngineering/ember-cli-custom-addons)
+# ember-cli-custom-addons 
+[![Build Status](https://travis-ci.org/BBVAEngineering/ember-cli-custom-addons.svg?branch=master)](https://travis-ci.org/BBVAEngineering/ember-cli-custom-addons)
+[![GitHub version](https://badge.fury.io/gh/BBVAEngineering%2Fember-cli-custom-addons.svg)](https://badge.fury.io/gh/BBVAEngineering%2Fember-cli-custom-addons)
+[![npm version](https://badge.fury.io/js/ember-cli-custom-addons.svg)](https://badge.fury.io/js/ember-cli-custom-addons)
+[![Dependency Status](https://david-dm.org/BBVAEngineering/ember-cli-custom-addons.svg)](https://david-dm.org/BBVAEngineering/ember-cli-custom-addons)
 
 This addon allows to create sub-applications with a different namespace of your ember-cli project.
 
@@ -25,6 +29,8 @@ This addon allows to create sub-applications with a different namespace of your 
 * `ember install ember-cli-custom-addons`
 
 ## Options
+
+You can pass the follow options by setting them in `config/environment.js` as follow:
 
 * `path`: addons path
 * `exclude.addons`: exclude addons from build
@@ -95,3 +101,9 @@ define('bar/pods/index', ['exports', 'ember', ...
 * `ember build`
 
 For more information on using ember-cli, visit [http://www.ember-cli.com/](http://www.ember-cli.com/).
+
+## Contributing
+
+We're thankful to the community for contributing any improvements.
+
+Do not forget to follow our [eslint](https://github.com/BBVAEngineering/javascript/tree/master/eslint-config-bbva) rules and make tests for the new functionalities/fixes.
