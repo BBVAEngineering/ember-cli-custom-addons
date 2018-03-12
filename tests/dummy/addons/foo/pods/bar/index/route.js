@@ -1,11 +1,13 @@
-import Ember from 'ember';
+import Route from '@ember/routing/route';
 
-export default Ember.Route.extend({
-    
-    initialized: false,
-    
-    init: function() {
-        this.set('initialized', true);
-    }
-    
+export default Route.extend({
+
+	initialized: false,
+
+	init() {
+		this._super(...arguments);
+
+		this.set('initialized', true);
+	}
+
 });

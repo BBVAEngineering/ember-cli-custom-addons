@@ -1,12 +1,13 @@
-import Ember from 'ember';
-import Helper from './_helper';
+import Component from '@ember/component';
 
-export default Ember.Component.extend({
+export default Component.extend({
 
-    initialized: false,
+	initialized: false,
 
-    init: function() {
-        this.set('initialized', true);
-    }
+	init() {
+		this._super(...arguments);
+
+		this.set('initialized', true);
+	}
 
 });

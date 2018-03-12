@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 import { module } from 'qunit';
 import { resolve } from 'rsvp';
 import startApp from '../helpers/start-app';

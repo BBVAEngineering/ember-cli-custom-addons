@@ -1,9 +1,9 @@
-/* eslint-env node */
+/* eslint-disable consistent-return */
 'use strict';
 
 const fs = require('fs');
 const defaults = require('lodash').defaults;
-const Funnel = require('broccoli-funnel');
+const Funnel = require('broccoli-funnel'); // eslint-disable-line node/no-unpublished-require
 
 let addons = [];
 let namespaceRegExp;
@@ -11,7 +11,7 @@ let paths = {};
 
 function getNamespaceRegExp() {
 	if (!namespaceRegExp) {
-		namespaceRegExp = new RegExp('^[^\/]+\/(?:templates\/)?((?:' + addons.join('|') + '\/).+)$');
+		namespaceRegExp = new RegExp('^[^\/]+\/(?:templates\/)?((?:' + addons.join('|') + '\/).+)$'); // eslint-disable-line prefer-template
 	}
 
 	return namespaceRegExp;
@@ -70,7 +70,7 @@ module.exports = {
 	 */
 	_setAddons() {
 		try {
-			addons = fs.readdirSync(paths.addons);
+			addons = fs.readdirSync(paths.addons); // eslint-disable-line no-sync
 		} catch (e) {
 			addons = [];
 		}
