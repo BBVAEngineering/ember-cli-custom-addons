@@ -1,11 +1,13 @@
-import Ember from 'ember';
+import Controller from '@ember/controller';
 
-export default Ember.Controller.extend({
-    
-    initialized: false,
-    
-    init: function() {
-        this.set('initialized', true);
-    }
-    
+export default Controller.extend({
+
+	initialized: false,
+
+	init() {
+		this._super(...arguments);
+
+		this.set('initialized', true);
+	}
+
 });
