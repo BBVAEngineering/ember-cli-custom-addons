@@ -1,17 +1,17 @@
 /* eslint-env node */
 'use strict';
 
-var fs = require('fs');
-var defaults = require('lodash').defaults;
-var Funnel = require('broccoli-funnel');
+const fs = require('fs');
+const defaults = require('lodash').defaults;
+const Funnel = require('broccoli-funnel');
 
-var addons = [];
-var namespaceRegExp;
-var paths = {};
+let addons = [];
+let namespaceRegExp;
+let paths = {};
 
 function getNamespaceRegExp() {
 	if (!namespaceRegExp) {
-		namespaceRegExp = new RegExp('^[^\/]+\/(?:templates\/)?((?:' + addons.join('|') + '\/).+)$');
+		namespaceRegExp = new RegExp(`^[^\/]+\/(?:templates\/)?((?:${addons.join('|')}\/).+)$`);
 	}
 
 	return namespaceRegExp;
@@ -26,7 +26,7 @@ module.exports = {
 	 *
 	 * @method config
 	 */
-	config: function (env, config) {
+	config: (env, config) => {
 		config.customAddons = defaults(config.customAddons || {}, {
 			path: 'addons',
 			exclude: {
@@ -44,20 +44,19 @@ module.exports = {
 	 *
 	 * @method _setPaths
 	 */
-	_setPaths: function () {
-		var options = this.options && this.options.customAddons;
-		var config = options ? options : this.project.config().customAddons;
-		var appDir = this.treePaths.app;
-		var projectPath = this.app.project.root + '/';
+	_setPaths: () => {
+		const options = this.options && this.options.customAddons;
+		const config = options ? options : this.project.config().customAddons;
+		let projectPath = `${this.app.project.root}/`;
 
-		if(this.isDevelopingAddon()){
+		if (this.isDevelopingAddon()) {
 			projectPath += 'tests/dummy/';
 		}
 
-		var appPath = projectPath + 'app/';
-		var addonsPath = [projectPath, config.path].join('') + '/';
+		const appPath = `${projectPath}app/`;
+		const addonsPath = `${[projectPath, config.path].join('')}/`;
 
-		paths =  {
+		paths = {
 			app: appPath,
 			project: projectPath,
 			addons: addonsPath
@@ -69,8 +68,9 @@ module.exports = {
 	 *
 	 * @method _setAddons
 	 */
-	_setAddons: function () {
+	_setAddons: () => {
 		try {
+			// eslint-disable-next-line no-sync
 			addons = fs.readdirSync(paths.addons);
 		} catch (e) {
 			addons = [];
@@ -83,11 +83,7 @@ module.exports = {
 	 * @method _templatePatterns
 	 * @return {Array}
 	 */
-	_templatePatterns: function() {
-		return this.registry.extensionsForType('template').map(function(extension) {
-			return '**/*/template.' + extension;
-		});
-	},
+	_templatePatterns: () => this.registry.extensionsForType('template').map((extension) => `**/*/template.${extension}`),
 
 	/**
 	 * Files to exclude from trees
@@ -95,19 +91,18 @@ module.exports = {
 	 * @method _getExcludes
 	 * @return {Array}
 	 */
-	_getExcludes: function() {
-		var options = this.options && this.options.customAddons;
-		var config = options ? options : this.project.config().customAddons;
-		var exclude = [];
+	_getExcludes: () => {
+		const options = this.options && this.options.customAddons;
+		const config = options ? options : this.project.config().customAddons;
+		let exclude = [];
 
-		if(config.exclude){
-			if(config.exclude.files){
+		if (config.exclude) {
+			if (config.exclude.files) {
 				exclude = exclude.concat(config.exclude.files);
 			}
-			if(config.exclude.addons){
-				var namespacePaths = config.exclude.addons.map(function(namespace){
-					return namespace + '/**/*';
-				});
+			if (config.exclude.addons) {
+				const namespacePaths = config.exclude.addons.map((namespace) => `${namespace}/**/*`);
+
 				exclude = exclude.concat(namespacePaths);
 			}
 		}
@@ -120,7 +115,7 @@ module.exports = {
 	 *
 	 * @method included
 	 */
-	included: function(app) {
+	included: (app) => {
 		this._super.included.apply(this, arguments);
 
 		this._setPaths();
@@ -133,17 +128,19 @@ module.exports = {
 	 *
 	 * @method treeForTemplates
 	 */
-	treeForTemplates: function () {
+	treeForTemplates: () => {
 		if (addons.length) {
-			var exclude = ['**/*/*.js'].concat(this._getExcludes());
+			const exclude = ['**/*/*.js'].concat(this._getExcludes());
 
-			var tree = new Funnel(paths.addons, {
+			const tree = new Funnel(paths.addons, {
 				include: this._templatePatterns(),
-				exclude: exclude
+				exclude
 			});
 
 			return tree;
 		}
+
+		return null;
 	},
 
 	/**
@@ -151,17 +148,19 @@ module.exports = {
 	 *
 	 * @method treeForApp
 	 */
-	treeForApp: function () {
+	treeForApp: () => {
 		if (addons.length) {
-			var exclude = this._templatePatterns().concat(this._getExcludes());
+			const exclude = this._templatePatterns().concat(this._getExcludes());
 
-			var tree = new Funnel(paths.addons, {
+			const tree = new Funnel(paths.addons, {
 				include: ['**/*/*.js'],
-				exclude: exclude
+				exclude
 			});
 
 			return tree;
 		}
+
+		return null;
 	},
 
 	/**
@@ -173,9 +172,9 @@ module.exports = {
 		app.options.babel = app.options.babel || {};
 		app.options.babel.plugins = app.options.babel.plugins || [];
 
-		var plugins = app.options.babel.plugins;
-		var regexp = getNamespaceRegExp();
-		var isInjected = plugins.find(plugin =>
+		const plugins = app.options.babel.plugins;
+		const regexp = getNamespaceRegExp();
+		const isInjected = plugins.find((plugin) =>
 			(plugin[0] === 'modules-regexp' || plugin[0] === 'babel-plugin-modules-regexp') &&
 			plugin[1] && plugin[1].regexp === regexp
 		);
@@ -183,7 +182,7 @@ module.exports = {
 		if (!isInjected) {
 			app.options.babel.plugins.push([
 				'modules-regexp', {
-					regexp: regexp,
+					regexp,
 					substr: '$1'
 				}
 			]);
