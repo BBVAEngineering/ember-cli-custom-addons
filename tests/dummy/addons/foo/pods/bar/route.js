@@ -4,7 +4,7 @@ export default Ember.Route.extend({
 
 	initialized: false,
 
-	init: () => {
+	init() {
 		this.set('initialized', true);
 	}
 });

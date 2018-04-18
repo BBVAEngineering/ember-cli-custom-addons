@@ -3,7 +3,7 @@ import Ember from 'ember';
 export default Ember.Controller.extend({
 	initialized: false,
 
-	init: () => {
+	init() {
 		this.set('initialized', true);
 	}
 });

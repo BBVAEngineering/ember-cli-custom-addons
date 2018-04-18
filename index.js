@@ -1,4 +1,5 @@
 /* eslint-env node */
+/* eslint-disable consistent-return */
 'use strict';
 
 const fs = require('fs');
@@ -26,7 +27,7 @@ module.exports = {
 	 *
 	 * @method config
 	 */
-	config: (env, config) => {
+	config(env, config) {
 		config.customAddons = defaults(config.customAddons || {}, {
 			path: 'addons',
 			exclude: {
@@ -44,7 +45,7 @@ module.exports = {
 	 *
 	 * @method _setPaths
 	 */
-	_setPaths: () => {
+	_setPaths() {
 		const options = this.options && this.options.customAddons;
 		const config = options ? options : this.project.config().customAddons;
 		let projectPath = `${this.app.project.root}/`;
@@ -68,10 +69,9 @@ module.exports = {
 	 *
 	 * @method _setAddons
 	 */
-	_setAddons: () => {
+	_setAddons() {
 		try {
-			// eslint-disable-next-line no-sync
-			addons = fs.readdirSync(paths.addons);
+			addons = fs.readdirSync(paths.addons); // eslint-disable-line no-sync
 		} catch (e) {
 			addons = [];
 		}
@@ -91,7 +91,7 @@ module.exports = {
 	 * @method _getExcludes
 	 * @return {Array}
 	 */
-	_getExcludes: () => {
+	_getExcludes() {
 		const options = this.options && this.options.customAddons;
 		const config = options ? options : this.project.config().customAddons;
 		let exclude = [];
@@ -115,7 +115,7 @@ module.exports = {
 	 *
 	 * @method included
 	 */
-	included: (app) => {
+	included(app) {
 		this._super.included.apply(this, arguments);
 
 		this._setPaths();
@@ -128,7 +128,7 @@ module.exports = {
 	 *
 	 * @method treeForTemplates
 	 */
-	treeForTemplates: () => {
+	treeForTemplates() {
 		if (addons.length) {
 			const exclude = ['**/*/*.js'].concat(this._getExcludes());
 
@@ -148,7 +148,7 @@ module.exports = {
 	 *
 	 * @method treeForApp
 	 */
-	treeForApp: () => {
+	treeForApp() {
 		if (addons.length) {
 			const exclude = this._templatePatterns().concat(this._getExcludes());
 
