@@ -9,5 +9,4 @@ export default Component.extend({
 
 		this.set('initialized', true);
 	}
-
 });

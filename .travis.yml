@@ -12,7 +12,9 @@ addons:
   chrome: stable
 
 cache:
-  yarn: true
+  directories:
+    - $HOME/.npm
+    - node_modules
 
 env:
   global:
@@ -34,14 +36,19 @@ matrix:
     - env: EMBER_TRY_SCENARIO=ember-canary
 
 before_install:
-  - curl -o- -L https://yarnpkg.com/install.sh | bash
-  - export PATH=$HOME/.yarn/bin:$PATH
+  - npm config set spin false
+  - npm install -g npm@^5.7
+  - npm install -g bower
+  - npm --version
+  - bower --version
 
 install:
-  - yarn install --no-lockfile --non-interactive
+  - npm ci
+
+before_script:
+  - sudo chown root /opt/google/chrome/chrome-sandbox
+  - sudo chmod 4755 /opt/google/chrome/chrome-sandbox
 
 script:
-  - yarn lint:js
-  # Usually, it's ok to finish the test scenario without reverting
-  #  to the addon's original dependency state, skipping "cleanup".
+  - node_modules/.bin/eslint "**/*.js"
   - node_modules/.bin/ember try:one $EMBER_TRY_SCENARIO --skip-cleanup

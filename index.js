@@ -1,9 +1,8 @@
-/* eslint-disable consistent-return */
 'use strict';
 
 const fs = require('fs');
 const defaults = require('lodash').defaults;
-const Funnel = require('broccoli-funnel'); // eslint-disable-line node/no-unpublished-require
+const Funnel = require('broccoli-funnel');// eslint-disable-line node/no-unpublished-require
 
 let addons = [];
 let namespaceRegExp;
@@ -11,7 +10,7 @@ let paths = {};
 
 function getNamespaceRegExp() {
 	if (!namespaceRegExp) {
-		namespaceRegExp = new RegExp('^[^\/]+\/(?:templates\/)?((?:' + addons.join('|') + '\/).+)$'); // eslint-disable-line prefer-template
+		namespaceRegExp = new RegExp(`^[^\/]+\/(?:templates\/)?((?:${addons.join('|')}\/).+)$`);
 	}
 
 	return namespaceRegExp;
@@ -138,6 +137,8 @@ module.exports = {
 				exclude
 			});
 		}
+
+		return null;
 	},
 
 	/**
@@ -154,6 +155,8 @@ module.exports = {
 				exclude
 			});
 		}
+
+		return null;
 	},
 
 	/**
@@ -181,5 +184,4 @@ module.exports = {
 			]);
 		}
 	}
-
 };
