@@ -44,7 +44,6 @@ before_install:
 
 install:
   - npm ci
-  - bower install
 
 before_script:
   - sudo chown root /opt/google/chrome/chrome-sandbox
