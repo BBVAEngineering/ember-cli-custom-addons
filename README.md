@@ -11,6 +11,7 @@ This addon allows to create sub-applications with a different namespace of your 
 
 [![NPM](https://nodei.co/npm/ember-cli-custom-addons.png?downloads=true&downloadRank=true)](https://nodei.co/npm/ember-cli-custom-addons/)
 
+```html
 <table>
   <tr>
     <td>Package</td><td>ember-cli-custom-addons</td>
@@ -24,6 +25,7 @@ This addon allows to create sub-applications with a different namespace of your 
     <td>>= 0.10</td>
   </tr>
 </table>
+```
 
 ## Installation
 
