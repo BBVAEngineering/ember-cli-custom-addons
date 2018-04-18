@@ -83,7 +83,9 @@ module.exports = {
 	 * @method _templatePatterns
 	 * @return {Array}
 	 */
-	_templatePatterns: () => this.registry.extensionsForType('template').map((extension) => `**/*/template.${extension}`),
+	_templatePatterns() {
+		return this.registry.extensionsForType('template').map((extension) => `**/*/template.${extension}`);
+	},
 
 	/**
 	 * Files to exclude from trees
