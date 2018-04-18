@@ -1,10 +1,8 @@
-/* eslint-env node */
-/* eslint-disable consistent-return */
 'use strict';
 
 const fs = require('fs');
 const defaults = require('lodash').defaults;
-const Funnel = require('broccoli-funnel');
+const Funnel = require('broccoli-funnel');// eslint-disable-line node/no-unpublished-require
 
 let addons = [];
 let namespaceRegExp;
@@ -47,7 +45,7 @@ module.exports = {
 	 */
 	_setPaths() {
 		const options = this.options && this.options.customAddons;
-		const config = options ? options : this.project.config().customAddons;
+		const config = options ? options : this.config(this.project.config().environment, this.project.config()).customAddons;
 		let projectPath = `${this.app.project.root}/`;
 
 		if (this.isDevelopingAddon()) {
@@ -134,12 +132,10 @@ module.exports = {
 		if (addons.length) {
 			const exclude = ['**/*/*.js'].concat(this._getExcludes());
 
-			const tree = new Funnel(paths.addons, {
+			return new Funnel(paths.addons, {
 				include: this._templatePatterns(),
 				exclude
 			});
-
-			return tree;
 		}
 
 		return null;
@@ -154,12 +150,10 @@ module.exports = {
 		if (addons.length) {
 			const exclude = this._templatePatterns().concat(this._getExcludes());
 
-			const tree = new Funnel(paths.addons, {
+			return new Funnel(paths.addons, {
 				include: ['**/*/*.js'],
 				exclude
 			});
-
-			return tree;
 		}
 
 		return null;
@@ -190,5 +184,4 @@ module.exports = {
 			]);
 		}
 	}
-
 };
