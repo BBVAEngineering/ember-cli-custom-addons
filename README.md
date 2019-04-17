@@ -2,30 +2,17 @@
 
 [![Build Status](https://travis-ci.org/BBVAEngineering/ember-cli-custom-addons.svg?branch=master)](https://travis-ci.org/BBVAEngineering/ember-cli-custom-addons)
 [![GitHub version](https://badge.fury.io/gh/BBVAEngineering%2Fember-cli-custom-addons.svg)](https://badge.fury.io/gh/BBVAEngineering%2Fember-cli-custom-addons)
-[![npm version](https://badge.fury.io/js/ember-cli-custom-addons.svg)](https://badge.fury.io/js/ember-cli-custom-addons)
+[![NPM version](https://badge.fury.io/js/ember-cli-custom-addons.svg)](https://badge.fury.io/js/ember-cli-custom-addons)
 [![Dependency Status](https://david-dm.org/BBVAEngineering/ember-cli-custom-addons.svg)](https://david-dm.org/BBVAEngineering/ember-cli-custom-addons)
-
-This addon allows to create sub-applications with a different namespace of your ember-cli project.
+[![codecov](https://codecov.io/gh/BBVAEngineering/ember-cli-custom-addons/branch/master/graph/badge.svg)](https://codecov.io/gh/BBVAEngineering/ember-cli-custom-addons)
+[![Greenkeeper badge](https://badges.greenkeeper.io/BBVAEngineering/ember-cli-custom-addons.svg)](https://greenkeeper.io/)
+[![Ember Observer Score](https://emberobserver.com/badges/ember-cli-custom-addons.svg)](https://emberobserver.com/addons/ember-cli-custom-addons)
 
 ## Information
 
 [![NPM](https://nodei.co/npm/ember-cli-custom-addons.png?downloads=true&downloadRank=true)](https://nodei.co/npm/ember-cli-custom-addons/)
 
-```html
-<table>
-  <tr>
-    <td>Package</td><td>ember-cli-custom-addons</td>
-  </tr>
-  <tr>
-    <td>Description</td>
-    <td>Ember-cli addons to build sub-applications</td>
-  </tr>
-  <tr>
-    <td>Node Version</td>
-    <td>>= 0.10</td>
-  </tr>
-</table>
-```
+This addon allows to create sub-applications with a different namespace of your ember-cli project.
 
 ## Installation
 

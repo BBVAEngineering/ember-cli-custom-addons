@@ -18,7 +18,7 @@ function getNamespaceRegExp() {
 
 module.exports = {
 
-	name: require('./package').name
+	name: require('./package').name,
 
 	/**
 	 * Initialize addons configuration

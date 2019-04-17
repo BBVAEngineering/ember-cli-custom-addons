@@ -23,7 +23,7 @@
   "scripts": {
     "build": "ember build",
     "lint:hbs": "ember-template-lint .",
-    "lint:js": "eslint --max-warnings 0 ./*.js addon app config tests",
+    "lint:js": "eslint --max-warnings 0 ./*.js config tests",
     "start": "ember serve",
     "test": "COVERAGE=true ember test",
     "test:all": "ember try:each",
