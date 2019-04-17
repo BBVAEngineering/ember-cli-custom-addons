@@ -1,21 +1,23 @@
 /* global requirejs */
-import { test } from 'qunit';
-import moduleForAcceptance from '../../tests/helpers/module-for-acceptance';
+import { module, test } from 'qunit';
+import { setupApplicationTest } from 'ember-qunit';
 
-moduleForAcceptance('Acceptance | bar');
+module('Acceptance | bar', function(hooks) {
+  setupApplicationTest(hooks);
 
-test('route exists', (assert) => {
-	assert.ok(requirejs('foo/pods/bar/route'));
-});
+  test('route exists', (assert) => {
+      assert.ok(requirejs('foo/pods/bar/route'));
+  });
 
-test('index route exists', (assert) => {
-	assert.ok(requirejs('foo/pods/bar/index/route'));
-});
+  test('index route exists', (assert) => {
+      assert.ok(requirejs('foo/pods/bar/index/route'));
+  });
 
-test('index controller exists', (assert) => {
-	assert.ok(requirejs('foo/pods/bar/index/controller'));
-});
+  test('index controller exists', (assert) => {
+      assert.ok(requirejs('foo/pods/bar/index/controller'));
+  });
 
-test('index template exists', (assert) => {
-	assert.ok(requirejs('foo/pods/bar/index/template'));
+  test('index template exists', (assert) => {
+      assert.ok(requirejs('foo/pods/bar/index/template'));
+  });
 });

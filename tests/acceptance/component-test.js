@@ -1,13 +1,15 @@
 /* global requirejs */
-import { test } from 'qunit';
-import moduleForAcceptance from '../../tests/helpers/module-for-acceptance';
+import { module, test } from 'qunit';
+import { setupApplicationTest } from 'ember-qunit';
 
-moduleForAcceptance('Acceptance | component');
+module('Acceptance | component', function(hooks) {
+  setupApplicationTest(hooks);
 
-test('component exists', (assert) => {
-	assert.ok(requirejs('foo/components/test-component/component'));
-});
+  test('component exists', (assert) => {
+      assert.ok(requirejs('foo/components/test-component/component'));
+  });
 
-test('template exists', (assert) => {
-	assert.ok(requirejs('foo/components/test-component/template'));
+  test('template exists', (assert) => {
+      assert.ok(requirejs('foo/components/test-component/template'));
+  });
 });
