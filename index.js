@@ -2,7 +2,7 @@
 
 const fs = require('fs');
 const defaults = require('lodash').defaults;
-const Funnel = require('broccoli-funnel');// eslint-disable-line node/no-unpublished-require
+const Funnel = require('broccoli-funnel');
 
 let addons = [];
 let namespaceRegExp;
@@ -10,7 +10,7 @@ let paths = {};
 
 function getNamespaceRegExp() {
 	if (!namespaceRegExp) {
-		namespaceRegExp = new RegExp(`^[^\/]+\/(?:templates\/)?((?:${addons.join('|')}\/).+)$`);
+		namespaceRegExp = `^[^\/]+\/(?:templates\/)?((?:${addons.join('|')}\/).+)$`;
 	}
 
 	return namespaceRegExp;
@@ -171,13 +171,13 @@ module.exports = {
 		const plugins = app.options.babel.plugins;
 		const regexp = getNamespaceRegExp();
 		const isInjected = plugins.find((plugin) =>
-			(plugin[0] === 'modules-regexp' || plugin[0] === 'babel-plugin-modules-regexp') &&
+			typeof plugin[0] === 'string' && plugin[0].match('modules-regexp') &&
 			plugin[1] && plugin[1].regexp === regexp
 		);
 
 		if (!isInjected) {
 			app.options.babel.plugins.push([
-				'modules-regexp', {
+				require.resolve('babel-plugin-modules-regexp'), {
 					regexp,
 					substr: '$1'
 				}
