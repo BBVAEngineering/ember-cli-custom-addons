@@ -1,0 +1,16 @@
+{
+  "all": true,
+  "include": [
+    "index.js"
+  ],
+  "reporter": [
+    "html",
+    "json",
+    "json-summary",
+    "lcov"
+  ],
+  "statements": 90,
+  "functions": 90,
+  "branches": 50,
+  "lines": 90
+}
