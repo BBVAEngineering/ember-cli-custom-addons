@@ -18,7 +18,7 @@ function getNamespaceRegExp() {
 
 module.exports = {
 
-	name: 'ember-cli-custom-addons',
+	name: require('./package').name
 
 	/**
 	 * Initialize addons configuration
@@ -184,4 +184,5 @@ module.exports = {
 			]);
 		}
 	}
+
 };
