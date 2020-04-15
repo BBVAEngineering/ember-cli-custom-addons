@@ -49,7 +49,6 @@
   },
   "homepage": "https://github.com/BBVAEngineering/ember-cli-custom-addons",
   "dependencies": {
-    "babel-plugin-modules-regexp": "^1.0.0",
     "broccoli-funnel": "^2.0.2",
     "ember-cli-babel": "^7.17.2",
     "ember-cli-htmlbars": "^4.2.2",
@@ -92,14 +91,10 @@
     "json": "^9.0.6",
     "loader.js": "^4.7.0",
     "nyc": "^14.0.0",
-    "qunit-dom": "^1.0.0",
     "semantic-release": "^15.13.3"
   },
   "engines": {
     "node": "10.* || >= 12"
-  },
-  "ember": {
-    "edition": "octane"
   },
   "ember-addon": {
     "configPath": "tests/dummy/config"
