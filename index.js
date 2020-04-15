@@ -10,7 +10,7 @@ let paths = {};
 
 function getNamespaceRegExp() {
 	if (!namespaceRegExp) {
-		namespaceRegExp = `^[^\/]+\/(?:templates\/)?((?:${addons.join('|')}\/).+)$`;
+		namespaceRegExp = `^[^/]+/(?:templates/)?((?:${addons.join('|')}/).+)$`;
 	}
 
 	return namespaceRegExp;

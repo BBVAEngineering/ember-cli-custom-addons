@@ -1,4 +1,3 @@
-/* global requirejs */
 import { module, test } from 'qunit';
 import { setupApplicationTest } from 'ember-qunit';
 
