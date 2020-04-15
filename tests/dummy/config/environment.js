@@ -3,6 +3,8 @@
 module.exports = function(environment) {
 	const ENV = {
 		modulePrefix: 'dummy',
+		podModulePrefix: 'dummy/pods',
+
 		environment,
 		rootURL: '/',
 		locationType: 'auto',
@@ -14,6 +16,13 @@ module.exports = function(environment) {
 			EXTEND_PROTOTYPES: {
 				// Prevent Ember Data from overriding Date.parse.
 				Date: false
+			}
+		},
+
+		customAddons: {
+			exclude: {
+				files: ['test/*'],
+				addons: ['test']
 			}
 		},
 
